@@ -20,8 +20,8 @@ jobs:
           url: ${{ secrets.VAULT_ADDR }}   # Публичный IP вашего Vault
           token: ${{ secrets.VAULT_TOKEN }} # Root-токен или любой другой валидный токен Vault
           secrets: |
-            secret/data/myapp apiKey | API_KEY ;
-            secret/data/myapp dbPassword | DB_PASSWORD
+            secret/data/data/myapp apiKey | API_KEY ;
+            secret/data/data/myapp dbPassword | DB_PASSWORD
 
       # 3. Использование секретов
       - name: Use Secrets
