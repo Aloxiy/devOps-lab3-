@@ -1,1 +1,28 @@
+name: Vault Integration
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fetch-secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Vault CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y unzip curl
+          curl -fsSL https://releases.hashicorp.com/vault/1.15.0/vault_1.15.0_linux_amd64.zip -o vault.zip
+          unzip vault.zip && sudo mv vault /usr/local/bin/
+
+      - name: Authenticate and Fetch Secret
+        env:
+          VAULT_ADDR: "http://127.0.0.1:8200"
+          VAULT_TOKEN: "${{ secrets.VAULT_TOKEN }}"
+        run: |
+          vault kv get -format=json secret/github-ci > secret.json
+          echo "Fetched secret successfully"
