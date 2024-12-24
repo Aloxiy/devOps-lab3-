@@ -23,12 +23,12 @@ jobs:
       - name: Wait for Vault to be Ready
         run: |
           for i in {1..20}; do
-            curl -fs http://127.0.0.1:8200/v1/sys/health && break || sleep 5
+            curl -fs http://vault:8200/v1/sys/health && break || sleep 5
           done
           echo "Vault is ready!"
 
       - name: Test Vault Status
-        run: curl http://127.0.0.1:8200/v1/sys/health || echo "Vault is not running"
+        run: curl http://vault:8200/v1/sys/health || echo "Vault is not running"
 
       - name: Install Vault CLI
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Authenticate and Fetch Secret
         env:
-          VAULT_ADDR: "http://127.0.0.1:8200"
+          VAULT_ADDR: "http://vault:8200"
           VAULT_TOKEN: "myroot"
         run: |
           vault kv put secret/github-ci username="admin" password="securepassword"
