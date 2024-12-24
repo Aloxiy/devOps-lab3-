@@ -17,9 +17,8 @@ jobs:
       - name: Retrieve Secrets
         uses: hashicorp/vault-action@v2
         with:
-          url: ${{ secrets.VAULT_ADDR }}
-          method: token
-          token: ${{ secrets.VAULT_TOKEN }}
+          url: ${{ secrets.VAULT_ADDR }}   # Публичный IP вашего Vault
+          token: ${{ secrets.VAULT_TOKEN }} # Root-токен или любой другой валидный токен Vault
           secrets: |
             secret/data/myapp apiKey | API_KEY ;
             secret/data/myapp dbPassword | DB_PASSWORD
