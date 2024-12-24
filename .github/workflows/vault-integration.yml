@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Wait for Vault to be Ready
         run: |
-          for i in {1..20}; do
+          for i in {1..5}; do
             curl -fs http://vault:8200/v1/sys/health && break || sleep 5
           done
           echo "Vault is ready!"
