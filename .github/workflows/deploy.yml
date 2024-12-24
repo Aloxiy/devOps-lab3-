@@ -1,0 +1,34 @@
+name: Secure Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Проверка кода
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Извлечение секретов из Vault
+      - name: Retrieve Secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: token
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            secret/data/myapp apiKey | API_KEY ;
+            secret/data/myapp dbPassword | DB_PASSWORD
+
+      # 3. Использование секретов
+      - name: Use Secrets
+        run: |
+          echo "Using API_KEY and DB_PASSWORD in a secure way"
+          curl -H "Authorization: Bearer $API_KEY" https://example.com/api
+        env:
+          API_KEY: ${{ steps.retrieve-secrets.outputs.API_KEY }}
+          DB_PASSWORD: ${{ steps.retrieve-secrets.outputs.DB_PASSWORD }}
