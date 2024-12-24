@@ -12,7 +12,6 @@ jobs:
     services:
       vault:
         image: vault:1.13.3
-        container_name: vault
         ports:
           - 8200:8200
         options: >
@@ -32,12 +31,12 @@ jobs:
         run: curl http://127.0.0.1:8200/v1/sys/health || echo "Vault is not running"
 
       - name: Verify Running Containers
-        run: docker ps
+        run: docker ps || echo "No running containers"
 
       - name: Verify Vault Container Logs
         run: |
           docker ps -a
-          docker logs vault || echo "Vault logs are unavailable"
+          docker logs $(docker ps -q --filter "ancestor=vault:1.13.3") || echo "Vault logs are unavailable"
 
       - name: Install Vault CLI
         run: |
