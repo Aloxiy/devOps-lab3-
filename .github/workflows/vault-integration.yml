@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       vault:
-        image: vault:1.15.0
+        image: vault:1.13.3
         options: >
           --cap-add=IPC_LOCK
           -e VAULT_DEV_ROOT_TOKEN_ID=myroot
