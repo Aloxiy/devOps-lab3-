@@ -20,6 +20,9 @@ jobs:
           -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200'
 
     steps:
+      - name: Debug Secrets
+        run: echo "Username:${{ secrets.DOCKER_USERNAME }}" && echo "Password length:${#secrets.DOCKER_PASSWORD}"
+      
       # Логин в Docker Hub перед инициализацией контейнеров
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
