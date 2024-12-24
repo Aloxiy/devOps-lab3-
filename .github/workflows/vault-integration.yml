@@ -20,6 +20,13 @@ jobs:
           -e VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
 
     steps:
+      - name: Wait for Vault to be Ready
+        run: |
+          for i in {1..10}; do
+            curl -fs http://localhost:8200/v1/sys/health && break || sleep 5
+          done
+          echo "Vault is ready!"
+
       - name: Debug Secrets
         run: |
           echo "Username: ${{ secrets.DOCKER_USERNAME }}"
@@ -40,8 +47,9 @@ jobs:
           VAULT_TOKEN: "myroot"
         run: |
           vault kv put secret/github-ci username="admin" password="securepassword"
-
+          
       - name: Verify Secret
         run: |
           vault kv get -format=json secret/github-ci > secret.json
           cat secret.json
+
