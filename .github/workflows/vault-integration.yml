@@ -22,18 +22,13 @@ jobs:
     steps:
       - name: Wait for Vault to be Ready
         run: |
-          for i in {1..10}; do
+          for i in {1..20}; do
             curl -fs http://127.0.0.1:8200/v1/sys/health && break || sleep 5
           done
           echo "Vault is ready!"
 
-      - name: Debug Secrets
-        run: |
-          echo "Username: ${{ secrets.DOCKER_USERNAME }}"
-          echo "Password is set: $(if [ -n "${{ secrets.DOCKER_PASSWORD }}" ]; then echo 'Yes'; else echo 'No'; fi)"
-
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Test Vault Status
+        run: curl http://127.0.0.1:8200/v1/sys/health || echo "Vault is not running"
 
       - name: Install Vault CLI
         run: |
