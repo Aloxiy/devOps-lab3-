@@ -20,5 +20,10 @@
 
 Зашел в Actions и понял, что Vault я настраивал локально, а Github Actions запускает workflow в своей облачной инфраструктуре...
 
+![image](screens/7.png)
+
 Я нашел решение этой проблемы с помощью запуска Vault с помощью docker в Github Actions
 
+Первым делом я переписал vault-integration.yml
+
+![image](screens/8.png)
